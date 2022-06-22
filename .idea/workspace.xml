@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ArtifactsWorkspaceSettings">
+    <artifacts-to-build>
+      <artifact name="MLP" />
+    </artifacts-to-build>
+  </component>
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="c3cb9408-71df-4f15-bbb6-83a8d42f57ec" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/input/input" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/DSPPCode/spark/MLP/impl/IterationStepImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/DSPPCode/spark/MLP/question/BackwardWeights.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/DSPPCode/spark/MLP/question/ComputeMatrix.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/DSPPCode/spark/MLP/question/ForwardStep.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/DSPPCode/spark/MLP/question/IterationStep.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/DSPPCode/spark/logistic_regression/question/DataPoint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/DSPPCode/spark/MLP/question/DataPoint.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/DSPPCode/spark/logistic_regression/question/IterationStep.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/DSPPCode/spark/logistic_regression/question/LogisticRegressionRunner.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/DSPPCode/spark/MLP/question/MLPRunner.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/DSPPTest/student/spark/logistic_regression/LogisticRegressionTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/DSPPTest/student/spark/MLP/MLPTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/resources/student/spark/logistic_regression/input" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/resources/student/spark/logistic_regression/input" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/resources/student/spark/logistic_regression/output" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/resources/student/spark/logistic_regression/output" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CodeStyleSettingsInfer">
+    <option name="done" value="true" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="flink_gcd" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
+  </component>
+  <component name="ProjectCodeStyleSettingsMigration">
+    <option name="version" value="1" />
+  </component>
+  <component name="ProjectId" id="2A68KETQAnClwRw0NPXtrttURTk" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="Git.Branch.Popup.ShowAllRemotes" value="true" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/input" />
+    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="settings.editor.selected.configurable" value="preferences.keymap" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="G:\作业\分布式编程\hw1\oj2022\input" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Application.MLPRunner">
+    <configuration name="MLPRunner" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="DSPPCode.spark.MLP.question.MLPRunner" />
+      <module name="DSPP_Exercise" />
+      <option name="PROGRAM_PARAMETERS" value="./input ./output/weights &quot;4 10 3&quot;" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="DSPPCode.spark.MLP.question.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="GCDTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="DSPP_Exercise" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="DSPPTest.student.flink.gcd.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="DSPPTest.student.flink.gcd" />
+      <option name="MAIN_CLASS_NAME" value="DSPPTest.student.flink.gcd.GCDTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="MLPTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="DSPP_Exercise" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="DSPPTest.student.spark.MLP.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="DSPPTest.student.spark.MLP" />
+      <option name="MAIN_CLASS_NAME" value="DSPPTest.student.spark.MLP.MLPTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="TwitterHotTopicsTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="DSPP_Exercise" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="DSPPTest.student.flink.twitter_hot_topics.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="DSPPTest.student.flink.twitter_hot_topics" />
+      <option name="MAIN_CLASS_NAME" value="DSPPTest.student.flink.twitter_hot_topics.TwitterHotTopicsTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="JetRunConfigurationType">
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="WORKING_DIRECTORY" />
+      <module name="" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <option name="filePath" />
+      <option name="vmParameters" />
+      <option name="alternativeJrePath" />
+      <option name="programParameters" />
+      <option name="passParentEnvs" value="true" />
+      <option name="workingDirectory" />
+      <option name="isAlternativeJrePathEnabled" value="false" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="WORKING_DIRECTORY" />
+      <module name="" />
+      <option name="filePath" />
+      <option name="vmParameters" />
+      <option name="alternativeJrePath" />
+      <option name="programParameters" />
+      <option name="passParentEnvs" value="true" />
+      <option name="workingDirectory" />
+      <option name="isAlternativeJrePathEnabled" value="false" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="WORKING_DIRECTORY" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="Application.MLPRunner" />
+      <item itemvalue="JUnit.GCDTest" />
+      <item itemvalue="JUnit.MLPTest" />
+      <item itemvalue="JUnit.TwitterHotTopicsTest" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.MLPRunner" />
+        <item itemvalue="JUnit.MLPTest" />
+        <item itemvalue="JUnit.GCDTest" />
+        <item itemvalue="JUnit.TwitterHotTopicsTest" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="c3cb9408-71df-4f15-bbb6-83a8d42f57ec" name="Default Changelist" comment="" />
+      <created>1654318610157</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1654318610157</updated>
+      <workItem from="1654318612842" duration="11292000" />
+      <workItem from="1655287553265" duration="9621000" />
+      <workItem from="1655352562995" duration="21901000" />
+      <workItem from="1655381591154" duration="1425000" />
+      <workItem from="1655645267142" duration="1991000" />
+      <workItem from="1655722632569" duration="7170000" />
+      <workItem from="1655786215729" duration="13414000" />
+      <workItem from="1655871994273" duration="4261000" />
+      <workItem from="1655884136443" duration="2408000" />
+      <workItem from="1655892131543" duration="1707000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+</project>

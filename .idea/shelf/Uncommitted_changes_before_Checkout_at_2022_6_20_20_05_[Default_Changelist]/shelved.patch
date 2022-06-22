@@ -1,0 +1,639 @@
+Index: src/test/java/DSPPTest/student/flink/gcd/GCDTest.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package DSPPTest.student.flink.gcd;\r\n\r\nimport static DSPPTest.util.FileOperator.deleteFolder;\r\nimport static DSPPTest.util.FileOperator.readFile2String;\r\nimport static DSPPTest.util.Verifier.verifyList;\r\n\r\nimport DSPPCode.flink.gcd.impl.GCDImpl;\r\nimport DSPPTest.student.TestTemplate;\r\nimport org.junit.Test;\r\n\r\npublic class GCDTest extends TestTemplate {\r\n\r\n  @Test(timeout = 10000)\r\n  public void test() throws Exception {\r\n    // 设置路径\r\n    String inputFile = root + \"/flink/gcd/input\";\r\n    String outputFile = outputRoot + \"/flink/gcd\";\r\n    String answerFile = root + \"/flink/gcd/answer\";\r\n\r\n    // 删除旧输出\r\n    deleteFolder(outputFile);\r\n\r\n    // 执行\r\n    String[] args = {inputFile, outputFile};\r\n    GCDImpl gcdImpl = new GCDImpl();\r\n    gcdImpl.run(args);\r\n\r\n    // 检验结果\r\n    verifyList(readFile2String(outputFile), readFile2String(answerFile));\r\n\r\n    System.out.println(\"恭喜通过~\");\r\n  }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/test/java/DSPPTest/student/flink/gcd/GCDTest.java b/src/test/java/DSPPTest/student/flink/gcd/GCDTest.java
+--- a/src/test/java/DSPPTest/student/flink/gcd/GCDTest.java	(revision f322d0825d2b3857c6f0990f434fe8e4c2d14c63)
++++ b/src/test/java/DSPPTest/student/flink/gcd/GCDTest.java	(date 1655647110160)
+@@ -4,7 +4,7 @@
+ import static DSPPTest.util.FileOperator.readFile2String;
+ import static DSPPTest.util.Verifier.verifyList;
+ 
+-import DSPPCode.flink.gcd.impl.GCDImpl;
++import DSPPCode.flink.gcd.impl.MLPImpl;
+ import DSPPTest.student.TestTemplate;
+ import org.junit.Test;
+ 
+@@ -22,8 +22,8 @@
+ 
+     // 执行
+     String[] args = {inputFile, outputFile};
+-    GCDImpl gcdImpl = new GCDImpl();
+-    gcdImpl.run(args);
++    MLPImpl mlpImpl = new MLPImpl();
++    mlpImpl.run(args);
+ 
+     // 检验结果
+     verifyList(readFile2String(outputFile), readFile2String(answerFile));
+Index: src/main/java/DSPPCode/flink/gcd/question/GCD.java
+===================================================================
+diff --git a/src/main/java/DSPPCode/flink/gcd/question/GCD.java b/src/main/java/DSPPCode/flink/gcd/question/GCD.java
+deleted file mode 100644
+--- a/src/main/java/DSPPCode/flink/gcd/question/GCD.java	(revision f322d0825d2b3857c6f0990f434fe8e4c2d14c63)
++++ /dev/null	(revision f322d0825d2b3857c6f0990f434fe8e4c2d14c63)
+@@ -1,44 +0,0 @@
+-package DSPPCode.flink.gcd.question;
+-
+-import org.apache.flink.api.common.functions.MapFunction;
+-import org.apache.flink.api.java.tuple.Tuple3;
+-import org.apache.flink.streaming.api.datastream.DataStream;
+-import org.apache.flink.streaming.api.datastream.DataStreamSource;
+-import org.apache.flink.streaming.api.datastream.IterativeStream;
+-import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+-
+-public abstract class GCD {
+-  public void run(String[] args) throws Exception {
+-    StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+-    env.setParallelism(1);
+-
+-    // 添加数据源以及执行GCD计算
+-    DataStreamSource<String> dataStreamSource = env.readTextFile(args[0]);
+-    // 提取source中的记录形成元组
+-    DataStream<Tuple3<String, Integer, Integer>> inputStream =
+-        dataStreamSource.map(
+-            new MapFunction<String, Tuple3<String, Integer, Integer>>() {
+-              @Override
+-              public Tuple3<String, Integer, Integer> map(String s) throws Exception {
+-                String[] record = s.split(" ");
+-                return new Tuple3<>(
+-                    record[0], Integer.valueOf(record[1]), Integer.valueOf(record[2]));
+-              }
+-            });
+-    // 创建迭代算子
+-    IterativeStream<Tuple3<String, Integer, Integer>> iteration = inputStream.iterate(5000);
+-    // 通过迭代算子计算GCD
+-    DataStream<Tuple3<String, Integer, Integer>> result = calGCD(iteration);
+-    // 将结果保存到文件中
+-    result.writeAsText(args[1]);
+-    env.execute(getClass().getName());
+-  }
+-
+-  /**
+-   * TODO 请完成该方法
+-   *
+-   * @param iteration 迭代算子
+-   * @return GCD计算结果
+-   */
+-  public abstract DataStream<Tuple3<String, Integer, Integer>> calGCD(IterativeStream<Tuple3<String, Integer, Integer>> iteration);
+-}
+Index: src/main/java/DSPPCode/flink/gcd/question/DataPoint.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/DSPPCode/flink/gcd/question/DataPoint.java b/src/main/java/DSPPCode/flink/gcd/question/DataPoint.java
+new file mode 100644
+--- /dev/null	(date 1655723757754)
++++ b/src/main/java/DSPPCode/flink/gcd/question/DataPoint.java	(date 1655723757754)
+@@ -0,0 +1,18 @@
++package DSPPCode.flink.gcd.question;
++
++import java.io.Serializable;
++
++/**
++ * 数据点类
++ */
++public class DataPoint implements Serializable {
++    public double[] x;
++    public int y;
++    public int index;
++
++    public DataPoint(double[] x, int y, int index) {
++        this.x = x;
++        this.y = y;
++        this.index = index;
++    }
++}
+Index: src/main/java/DSPPCode/flink/gcd/question/MLP.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/DSPPCode/flink/gcd/question/MLP.java b/src/main/java/DSPPCode/flink/gcd/question/MLP.java
+new file mode 100644
+--- /dev/null	(date 1655723282381)
++++ b/src/main/java/DSPPCode/flink/gcd/question/MLP.java	(date 1655723282381)
+@@ -0,0 +1,99 @@
++package DSPPCode.flink.gcd.question;
++
++import DSPPCode.flink.gcd.question.DataPoint;
++import DSPPCode.flink.gcd.question.BackwardWeights;
++
++import org.apache.flink.api.common.functions.MapFunction;
++import org.apache.flink.api.java.tuple.Tuple2;
++import org.apache.flink.api.java.tuple.Tuple3;
++import org.apache.flink.streaming.api.datastream.DataStream;
++import org.apache.flink.streaming.api.datastream.DataStreamSource;
++import org.apache.flink.streaming.api.datastream.IterativeStream;
++import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
++import java.io.BufferedWriter;
++import java.io.File;
++import java.io.FileWriter;
++import java.text.DecimalFormat;
++import java.util.regex.Pattern;
++
++public abstract class MLP {
++
++  private static final Pattern SPACE = Pattern.compile(" ");
++
++  private static final DecimalFormat FORMAT = new DecimalFormat("#0.00");
++
++  public void run(String[] args) throws Exception {
++    StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
++    env.setParallelism(1);
++
++    // 添加数据源以及执行GCD计算
++    DataStreamSource<String> dataStreamSource = env.readTextFile(args[0]);
++
++    String[] tok = args[2].split(" ");
++    int D = Integer.parseInt(tok[0]);
++    int H = Integer.parseInt(tok[1]);
++    int O = Integer.parseInt(tok[2]);
++
++    double[][] w1 = new double[D][H];
++    double[][] w2 = new double[H][O];
++    for (int i = 0; i < D; i++){
++      for(int j = 0; j < H; j++){
++        w1[i][j] = 2 * (Math.random() - 0.5);
++      }
++    }
++    for (int i = 0; i < H; i++){
++      for(int j = 0; j < O; j++){
++        w2[i][j] = 2 * (Math.random() - 0.5);
++      }
++    }
++
++    // 提取source中的记录形成元组
++    DataStream<DataPoint> inputStream =
++        dataStreamSource.map(
++            new MapFunction<String, DataPoint>() {
++              @Override
++              public DataPoint map(String s) throws Exception {
++                String[] tok = SPACE.split(s);
++                int index = Integer.parseInt(tok[0]);
++                int y = Integer.parseInt(tok[1]);
++                double[] x = new double[D];
++                for (int i = 0; i < D; i++) {
++                  x[i] = Double.parseDouble(tok[i + 2]);
++                }
++                return new DataPoint(x, y, index);
++              }
++              }
++            );
++    // 创建迭代算子
++    IterativeStream<DataPoint> iteration = inputStream.iterate(5000);
++    // 通过迭代算子计算GCD
++    BackwardWeights result = calMLP(iteration, new BackwardWeights(w1, w2));
++    // 将结果保存到文件中
++    BufferedWriter bw = new BufferedWriter(new FileWriter(new File(args[1])));
++
++    bw.write("w1:\n");
++    for (int i = 0; i < w1.length; i++) {
++      for (int j = 0; j < w1[0].length; j++){
++        bw.write(FORMAT.format(result.w1[i][j]) + " ");
++      }
++      bw.write("\n");
++    }
++    bw.write("w2:\n");
++    for (int i = 0; i < w2.length; i++) {
++      for (int j = 0; j < w2[0].length; j++){
++        bw.write(FORMAT.format(result.w2[i][j]) + " ");
++      }
++      bw.write("\n");
++    }
++    bw.close();
++    env.execute(getClass().getName());
++  }
++
++  /**
++   * TODO 请完成该方法
++   *
++   * @param iteration 迭代算子
++   * @return GCD计算结果
++   */
++  public abstract BackwardWeights calMLP(IterativeStream<DataPoint> iteration, BackwardWeights bw);
++}
+Index: src/main/java/DSPPCode/flink/gcd/question/BackwardWeights.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/DSPPCode/flink/gcd/question/BackwardWeights.java b/src/main/java/DSPPCode/flink/gcd/question/BackwardWeights.java
+new file mode 100644
+--- /dev/null	(date 1655647158833)
++++ b/src/main/java/DSPPCode/flink/gcd/question/BackwardWeights.java	(date 1655647158833)
+@@ -0,0 +1,17 @@
++package DSPPCode.flink.gcd.question;
++
++public class BackwardWeights{
++  public double[][] w1;
++  public double[][] w2;
++
++  public BackwardWeights(double[][] w1, double[][] w2){
++    this.w1 = w1;
++    this.w2 = w2;
++  }
++
++  public void set(BackwardWeights bk){
++    this.w1 = bk.w1;
++    this.w2 = bk.w2;
++  }
++
++}
+Index: src/test/resources/student/flink/gcd/input
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>A 5 2\r\nB 18 6
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/test/resources/student/flink/gcd/input b/src/test/resources/student/flink/gcd/input
+--- a/src/test/resources/student/flink/gcd/input	(revision f322d0825d2b3857c6f0990f434fe8e4c2d14c63)
++++ b/src/test/resources/student/flink/gcd/input	(date 1655646156502)
+@@ -1,2 +1,150 @@
+-A 5 2
+-B 18 6
+\ No newline at end of file
++0 0 4.8 3.1 1.6 0.2
++1 2 7.2 3.6 6.1 2.5
++2 1 5.0 2.3 3.3 1.0
++3 1 5.5 2.5 4.0 1.3
++4 1 5.2 2.7 3.9 1.4
++5 2 6.2 3.4 5.4 2.3
++6 0 5.1 3.5 1.4 0.3
++7 0 4.4 3.0 1.3 0.2
++8 0 4.6 3.2 1.4 0.2
++9 0 4.5 2.3 1.3 0.3
++10 2 7.2 3.2 6.0 1.8
++11 1 5.5 2.6 4.4 1.2
++12 2 6.2 2.8 4.8 1.8
++13 0 5.8 4.0 1.2 0.2
++14 1 5.7 3.0 4.2 1.2
++15 1 6.2 2.9 4.3 1.3
++16 0 4.6 3.6 1.0 0.2
++17 2 7.3 2.9 6.3 1.8
++18 2 6.5 3.0 5.8 2.2
++19 2 5.6 2.8 4.9 2.0
++20 0 5.0 3.2 1.2 0.2
++21 1 5.7 2.8 4.5 1.3
++22 1 6.1 3.0 4.6 1.4
++23 0 4.7 3.2 1.6 0.2
++24 0 4.4 3.2 1.3 0.2
++25 2 7.1 3.0 5.9 2.1
++26 2 5.7 2.5 5.0 2.0
++27 2 6.3 3.4 5.6 2.4
++28 2 7.7 3.0 6.1 2.3
++29 0 4.4 2.9 1.4 0.2
++30 1 6.4 3.2 4.5 1.5
++31 0 5.2 4.1 1.5 0.1
++32 2 6.7 3.3 5.7 2.1
++33 0 5.1 3.4 1.5 0.2
++34 0 5.5 3.5 1.3 0.2
++35 2 6.7 3.1 5.6 2.4
++36 1 5.0 2.0 3.5 1.0
++37 2 5.8 2.8 5.1 2.4
++38 2 6.9 3.1 5.1 2.3
++39 0 5.4 3.7 1.5 0.2
++40 1 5.6 2.5 3.9 1.1
++41 0 5.4 3.4 1.7 0.2
++42 2 6.4 3.2 5.3 2.3
++43 2 6.3 2.7 4.9 1.8
++44 1 5.8 2.7 3.9 1.2
++45 1 6.4 2.9 4.3 1.3
++46 0 5.1 3.8 1.9 0.4
++47 2 6.9 3.2 5.7 2.3
++48 2 7.2 3.0 5.8 1.6
++49 2 4.9 2.5 4.5 1.7
++50 2 6.0 2.2 5.0 1.5
++51 2 6.9 3.1 5.4 2.1
++52 1 4.9 2.4 3.3 1.0
++53 0 5.5 4.2 1.4 0.2
++54 1 6.3 2.5 4.9 1.5
++55 0 5.1 3.3 1.7 0.5
++56 2 6.4 2.8 5.6 2.1
++57 1 6.7 3.1 4.4 1.4
++58 1 5.5 2.3 4.0 1.3
++59 2 6.5 3.0 5.5 1.8
++60 2 6.7 2.5 5.8 1.8
++61 2 6.3 2.5 5.0 1.9
++62 1 5.8 2.7 4.1 1.0
++63 0 4.6 3.4 1.4 0.3
++64 0 5.0 3.0 1.6 0.2
++65 1 5.4 3.0 4.5 1.5
++66 1 5.1 2.5 3.0 1.1
++67 2 6.0 3.0 4.8 1.8
++68 0 5.4 3.4 1.5 0.4
++69 1 6.9 3.1 4.9 1.5
++70 1 6.2 2.2 4.5 1.5
++71 1 6.7 3.0 5.0 1.7
++72 0 4.3 3.0 1.1 0.1
++73 0 4.7 3.2 1.3 0.2
++74 0 5.4 3.9 1.3 0.4
++75 0 4.8 3.4 1.9 0.2
++76 0 5.1 3.8 1.5 0.3
++77 0 5.4 3.9 1.7 0.4
++78 2 6.5 3.2 5.1 2.0
++79 2 7.7 3.8 6.7 2.2
++80 2 6.1 3.0 4.9 1.8
++81 0 5.0 3.5 1.6 0.6
++82 1 6.6 2.9 4.6 1.3
++83 2 6.5 3.0 5.2 2.0
++84 1 6.3 3.3 4.7 1.6
++85 0 4.9 3.6 1.4 0.1
++86 0 4.9 3.0 1.4 0.2
++87 0 4.8 3.0 1.4 0.1
++88 1 5.8 2.6 4.0 1.2
++89 2 6.7 3.3 5.7 2.5
++90 2 6.4 2.7 5.3 1.9
++91 2 7.7 2.6 6.9 2.3
++92 1 6.1 2.8 4.7 1.2
++93 1 6.7 3.1 4.7 1.5
++94 2 6.3 2.9 5.6 1.8
++95 1 6.6 3.0 4.4 1.4
++96 1 5.6 3.0 4.5 1.5
++97 0 4.9 3.1 1.5 0.2
++98 2 6.8 3.0 5.5 2.1
++99 1 6.1 2.9 4.7 1.4
++100 1 6.0 3.4 4.5 1.6
++101 0 5.3 3.7 1.5 0.2
++102 0 5.7 4.4 1.5 0.4
++103 2 7.9 3.8 6.4 2.0
++104 2 5.8 2.7 5.1 1.9
++105 2 7.6 3.0 6.6 2.1
++106 0 5.1 3.7 1.5 0.4
++107 0 4.8 3.0 1.4 0.3
++108 0 5.0 3.3 1.4 0.2
++109 1 5.7 2.8 4.1 1.3
++110 2 6.8 3.2 5.9 2.3
++111 2 6.7 3.0 5.2 2.3
++112 1 6.3 2.3 4.4 1.3
++113 0 5.2 3.5 1.5 0.2
++114 1 5.9 3.2 4.8 1.8
++115 1 5.7 2.6 3.5 1.0
++116 1 5.9 3.0 4.2 1.5
++117 1 5.5 2.4 3.7 1.0
++118 0 5.2 3.4 1.4 0.2
++119 0 5.1 3.8 1.6 0.2
++120 0 4.6 3.1 1.5 0.2
++121 1 6.0 2.9 4.5 1.5
++122 1 6.5 2.8 4.6 1.5
++123 2 7.4 2.8 6.1 1.9
++124 1 7.0 3.2 4.7 1.4
++125 1 6.1 2.8 4.0 1.3
++126 2 6.1 2.6 5.6 1.4
++127 1 5.5 2.4 3.8 1.1
++128 2 5.9 3.0 5.1 1.8
++129 1 5.6 3.0 4.1 1.3
++130 0 5.0 3.5 1.3 0.3
++131 2 6.3 3.3 6.0 2.5
++132 1 6.0 2.2 4.0 1.0
++133 1 5.7 2.9 4.2 1.3
++134 0 4.9 3.1 1.5 0.1
++135 0 5.7 3.8 1.7 0.3
++136 0 4.8 3.4 1.6 0.2
++137 1 6.8 2.8 4.8 1.4
++138 1 6.0 2.7 5.1 1.6
++139 2 6.3 2.8 5.1 1.5
++140 2 6.4 3.1 5.5 1.8
++141 0 5.0 3.4 1.6 0.4
++142 0 5.0 3.6 1.4 0.2
++143 2 6.4 2.8 5.6 2.2
++144 2 5.8 2.7 5.1 1.9
++145 1 5.6 2.9 3.6 1.3
++146 0 5.0 3.4 1.5 0.2
++147 0 5.1 3.5 1.4 0.2
++148 2 7.7 2.8 6.7 2.0
++149 1 5.6 2.7 4.2 1.3
+Index: src/main/java/DSPPCode/flink/gcd/impl/MLPImpl.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/DSPPCode/flink/gcd/impl/MLPImpl.java b/src/main/java/DSPPCode/flink/gcd/impl/MLPImpl.java
+new file mode 100644
+--- /dev/null	(date 1655725815946)
++++ b/src/main/java/DSPPCode/flink/gcd/impl/MLPImpl.java	(date 1655725815946)
+@@ -0,0 +1,109 @@
++package DSPPCode.flink.gcd.impl;
++
++import DSPPCode.flink.gcd.question.DataPoint;
++import DSPPCode.flink.gcd.question.BackwardWeights;
++import DSPPCode.flink.gcd.question.MLP;
++import org.apache.flink.api.common.functions.MapFunction;
++import org.apache.flink.api.common.functions.ReduceFunction;
++import org.apache.flink.streaming.api.datastream.DataStream;
++import org.apache.flink.streaming.api.datastream.IterativeStream;
++import scala.Tuple2;
++import java.text.DecimalFormat;
++
++public class MLPImpl extends MLP{
++
++  private static final DecimalFormat FORMAT = new DecimalFormat("#0.0000");
++
++  public BackwardWeights calMLP(IterativeStream<DataPoint> iteration, BackwardWeights bw){
++
++    ComputeMatrix computeMatrix = new ComputeMatrix();
++    int count = 150;
++    double[][] cache1 = new double[count][bw.w1.length]; // B * D
++    double[][] cache2 = new double[count][bw.w2.length]; // B * H
++    DataStream<DataPoint> logits = iteration.map(
++        new MapFunction<DataPoint, DataPoint>() {
++          @Override
++          public DataPoint map(DataPoint point){
++            double[][] x = new double[1][point.x.length];
++            x[0] = point.x;
++            x = computeMatrix.multiply(x, bw.w1, 0);
++            cache1[point.index] = point.x;
++            x = computeMatrix.activate(x);
++            cache2[point.index] = x[0];
++            return new DataPoint(x[0], point.y, point.index);
++          }
++        }
++    ).map(
++        new MapFunction<DataPoint, DataPoint>() {
++          @Override
++          public DataPoint map(DataPoint point) throws Exception {
++            double[][] x = new double[1][point.x.length];
++            x[0] = point.x;
++            x = computeMatrix.multiply(x, bw.w2,0);
++            double[] line_score = computeMatrix.softmax(x[0]);
++            return new DataPoint(line_score, point.y, point.index);
++          }
++        }
++    ).setParallelism(2);
++    DataStream<Tuple2<Double, Integer>> correct = logits.map(
++        new MapFunction<DataPoint, Tuple2<Double, Integer>>() {
++          @Override
++          public Tuple2<Double, Integer> map(DataPoint point) throws Exception {
++            int best = 1;
++            double best_logits = point.x[best];
++            for (int i = 0; i < point.x.length; i++){
++              if (best_logits < point.x[i]) best = i;
++            }
++
++            return (best == point.y ? 1 : 0);
++          }
++        }
++    );
++    DataStream<Double> Loss = logits.map(
++        new MapFunction<DataPoint, Double>() {
++          @Override
++          public Double map(DataPoint point) throws Exception {
++            double loss = computeMatrix.cross_entropy(point.x, point.y);
++            return loss;
++          }
++        }
++    ).keyBy(0).reduce(
++        new ReduceFunction<Double>() {
++          @Override
++          public Double reduce(Double aDouble, Double t1) throws Exception {
++            return null;
++          }
++        }
++    );
++
++    double[][] grad2 = logits.map(
++        point -> {
++          double[] dout = computeMatrix.backward(point.x, point.y, count);
++          double[][] grad = computeMatrix.multiply1D(cache2[point.index], dout);
++          return grad;
++        }
++    ).reduce(vectorSum);
++
++    double[][] grad1 = logits.map(
++        point -> {
++          double[][] dout = new double[1][weights2[0].length];
++          dout[0] =  computeMatrix.backward(point.x, point.y, count);
++          double[][] grad = computeMatrix.multiply(dout, weights2, 1);
++          double[][] h1 = new double[1][weights2.length];
++          h1[0] = computeMatrix.activate_backward(grad[0], cache2[point.index]);
++          return computeMatrix.multiply1D(cache1[point.index], h1[0]);
++        }
++    ).reduce(vectorSum);
++
++    double acc = (double) correct / (double) count;
++    double loss = Loss.reduce((loss1, loss2) -> loss1 + loss2) / count;
++    System.out.println("loss: " + FORMAT.format(loss) + " got " + correct + "/" + count
++        + " correct acc: " + FORMAT.format(acc));
++
++    return new BackwardWeights(grad1, grad2);
++
++    return new BackwardWeights(bw.w1, bw.w2);
++  }
++
++
++}
+Index: src/main/java/DSPPCode/flink/gcd/impl/ComputeMatrix.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/DSPPCode/flink/gcd/impl/ComputeMatrix.java b/src/main/java/DSPPCode/flink/gcd/impl/ComputeMatrix.java
+new file mode 100644
+--- /dev/null	(date 1655722930595)
++++ b/src/main/java/DSPPCode/flink/gcd/impl/ComputeMatrix.java	(date 1655722930595)
+@@ -0,0 +1,101 @@
++package DSPPCode.flink.gcd.impl;
++
++import scala.Serializable;
++import java.lang.Math;
++import java.text.DecimalFormat;
++
++public class ComputeMatrix implements Serializable {
++
++  private DecimalFormat FORMAT = new DecimalFormat("#0.00");
++
++  public void display(double[][] A){
++    for (int i = 0; i < A.length; i++){
++      for (int j = 0; j < A[0].length; j++){
++        System.out.print(FORMAT.format(A[i][j]) + " ");
++      }
++      System.out.println();
++    }
++  }
++
++  public double[][] multiply(double[][] A, double[][] B, int transpose){
++    int I = A.length;
++    int K = A[0].length;
++    if (transpose == 1){
++      int J = B.length;
++      double[][] result = new double[I][J];
++      for (int i = 0; i < I; i++){
++        for (int j = 0; j < J; j++){
++          for(int k = 0; k < K; k++){
++            result[i][j] += A[i][k] * B[j][k];
++          }
++
++        }
++      }
++      return result;
++    } else {
++      int J = B[0].length;
++      double[][] result = new double[I][J];
++      for (int i = 0; i < I; i++){
++        for (int j = 0; j < J; j++){
++          for(int k = 0; k < K; k++){
++            result[i][j] += A[i][k] * B[k][j];
++          }
++        }
++      }
++      return result;
++    }
++
++  }
++
++  public double[][] multiply1D(double[] a, double[] b){
++    int I = a.length;
++    int J = b.length;
++    double[][] result = new double[I][J];
++    for (int i = 0; i < I; i++){
++      for (int j = 0; j < J; j++){
++        result[i][j] = a[i] * b[j];
++      }
++    }
++    return result;
++  }
++
++  public double[][] activate(double[][] A){
++    for (int i = 0; i < A.length; i++){
++      for (int j = 0; j < A[0].length; j++){
++        A[i][j] = Math.tanh(A[i][j]);
++      }
++    }
++    return A;
++  }
++
++  public double[] activate_backward(double[] x, double[] c){
++    for (int i = 0; i < x.length; i++){
++      x[i] = x[i] * (1 - c[i] * c[i]);
++    }
++    return x;
++  }
++
++  public double[] softmax(double[] x){
++    double[] prob = new double[x.length];
++    double sum = 0;
++    for (int i = 0; i < x.length; i++){
++      sum += Math.exp(x[i]);
++    }
++    for (int i = 0; i < x.length; i++){
++      prob[i] = Math.exp(x[i]) / sum;
++    }
++    return prob;
++  }
++
++  public double cross_entropy(double[] score, int y){
++    return -Math.log(score[y]);
++  }
++
++  public double[] backward(double[] prob, int y, int n){
++    prob[y] -= 1;
++    for (int i = 0; i < prob.length; i++)prob[i] /= n;
++    return prob;
++  }
++
++}
++
